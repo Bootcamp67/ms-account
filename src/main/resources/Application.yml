@@ -1,0 +1,27 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: ms-account
+  data:
+    monodb:
+      uri: ${MONGO_URI_MSACCOUNT:mongodb://localhost:27017/account}
+      database: ${MONGO_DATABASE:bootcampbd}
+
+ms:
+  customer:
+    base-url: ${MS_CUSTOMER_BASE_URL:http://localhost:8082}
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      customerCB:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+
+logging:
+  level:
+    root: INFO
+  security: DEBUG
