@@ -1,11 +1,12 @@
 package com.bootcamp67.ms_account.interceptor;
 
-import com.bootcamp67.ms_account.exception.BusinessException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
+
+import java.util.UUID;
 
 @Component
 public class HeaderInterceptor implements WebFilter {
@@ -17,8 +18,8 @@ public class HeaderInterceptor implements WebFilter {
         .getHeaders()
         .getFirst("x-correlation-id");
 
-    if(correlationId==null || correlationId.isBlank()){
-      return Mono.error(new BusinessException("Missing header x-correlation-id"));
+    if (correlationId == null) {
+      correlationId = UUID.randomUUID().toString();
     }
 
     exchange.getAttributes().put("correlationId",correlationId);
